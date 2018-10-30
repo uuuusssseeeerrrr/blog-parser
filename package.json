@@ -1,0 +1,31 @@
+{
+  "name": "blogparser",
+  "version": "1.0.0",
+  "description": "blog parser for KR",
+  "main": "parser.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uuuusssseeeerrrr/blog-parser.git"
+  },
+  "keywords": [
+    "blog",
+    "parser",
+    "naver",
+    "tistory",
+    "daum"
+  ],
+  "author": "j",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/uuuusssseeeerrrr/blog-parser/issues"
+  },
+  "homepage": "https://github.com/uuuusssseeeerrrr/blog-parser#readme",
+  "dependencies": {
+    "jsdom": "^12.2.0",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.5"
+  }
+}

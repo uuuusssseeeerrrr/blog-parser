@@ -1,0 +1,41 @@
+var reqpromise = require('request-promise-native');
+const jsdom = require('jsdom');
+const { JSDOM } = jsdom;
+
+exports.parse = (url) => {
+    var splitTarget = url.path.split('/');
+    let targetURL = "https://blog.naver.com/PostView.nhn?blogId="
+        + splitTarget[1] + "&logNo=" + splitTarget[2];
+    reqpromise.get(targetURL)
+        .then((res) => {
+            if (res.includes('class="se_doc_header_start"')) {
+                parseSE3(res);
+            } else {
+                parseSE2(res);
+            }
+        })
+        .catch(function (err) {
+            console.log(err);
+        });
+}
+
+function parseSE2(dataHTML) {
+    const dom = new JSDOM(dataHTML);
+    let title = dom.window.document.getElementsByClassName('pcol1');
+    let postArea = dom.window.document.getElementById('postViewArea');
+    return {
+        'title': title.outerHTML,
+        'content': postArea.outerHTML
+    };
+}
+
+function parseSE3(dataHTML) {
+    const dom = new JSDOM(dataHTML);
+    let title = dom.window.document.querySelector('h3.se_textarea');
+    let postArea = "<link rel='stylesheet' href='https://ssl.pstatic.net/static.editor/static/viewer/common/se_viewer_blog_pc.css'/>";
+    postArea += dom.window.document.querySelector('div.sect_dsc').outerHTML;
+    return {
+        'title': title.outerHTML,
+        'content': postArea.outerHTML
+    }
+}
