@@ -1,6 +1,6 @@
 const url = require('url');
-const naverparser = require('./naverparser');
-const tistoryparser = require('./tistoryparser');
+const naverparser = require('./parser_module/naverparser');
+const tistoryparser = require('./parser_module/tistoryparser');
 
 module.exports = {
   parse: (_url) => {
