@@ -1,0 +1,14 @@
+{
+    "contentArray" : [
+        "#tt_article_useless_p_margin",
+        "#area_view",
+        "div.article"
+    ],
+    "removeContentArray":[
+        "tt_adsense_top",
+        "tt_adsense_bottom",
+        "container_postbtn",
+        "tt-plugin",
+        "container_postbtn"
+    ]
+}

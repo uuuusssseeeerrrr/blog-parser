@@ -1,3 +1,3 @@
-var parser = require('./parser');
+const parser = require('./parser');
 
-parser.parse('https://blog.naver.com/cjone_blog/221387206801');
+parser.parse('http://happygrammer.tistory.com/150');
