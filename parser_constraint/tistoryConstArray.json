@@ -2,7 +2,7 @@
     "contentArray" : [
         ".tt_article_useless_p_margin",
         ".area_view",
-        "div.article"
+        ".article"
     ],
     "removeContentArray":[
         ".tt_adsense_top",

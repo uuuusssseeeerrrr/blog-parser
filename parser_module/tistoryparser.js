@@ -7,10 +7,11 @@ const { JSDOM } = jsdom;
 
 function nextSibilingDelete(el, removeContentArray) {
   for (let i = 0; i < removeContentArray.length; i += 1) {
-    if (el.querySelector(removeContentArray[i])) {
-      while (el.querySelector(removeContentArray[i])) {
-        el.querySelector(removeContentArray[i]).nextSibling.removeChild();
+    if (el.querySelector(removeContentArray[i]) != null) {
+      while (el.querySelector(removeContentArray[i]).nextSibling) {
+        el.querySelector(removeContentArray[i]).nextSibling.remove();
       }
+      el.querySelector(removeContentArray[i]).remove();
     }
   }
   return el;

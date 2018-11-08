@@ -15,9 +15,9 @@ exports.parse = (url) => {
         parseSE2(res);
       }
     })
-    .catch((function (err) {
-      console.log(err);
-    })());
+    .catch((err) => {
+      throw err;
+    });
 };
 
 function parseSE2(dataHTML) {
