@@ -1,23 +1,34 @@
 /* eslint no-use-before-define: ["error", { "functions": false }] */
-const reqpromise = require('request-promise-native');
+const http = require('http');
+const https = require('https');
 const jsdom = require('jsdom');
 
 const { JSDOM } = jsdom;
+
 exports.parse = (url) => {
   const splitTarget = url.path.split('/');
-  const targetURL = `https://blog.naver.com/PostView.nhn?
-  blogId=${splitTarget[1]}&logNo=${splitTarget[2]}`;
-  reqpromise.get(targetURL)
-    .then((res) => {
-      if (res.includes('class="se_doc_header_start"')) {
-        parseSE3(res);
-      } else {
-        parseSE2(res);
-      }
-    })
-    .catch((err) => {
-      throw err;
+  const targetURL = `https://blog.naver.com/PostView.nhn?blogId=${splitTarget[1]}&logNo=${splitTarget[2]}`;
+  let serverData;
+  let httpModule;
+
+  if (targetURL.indexOf('https') > 0) {
+    httpModule = https;
+  } else {
+    httpModule = http;
+  }
+
+  httpModule.get(targetURL, (response) => {
+    response.on('data', (chunk) => {
+      serverData += chunk;
     });
+    response.on('end', () => {
+      if (serverData.includes('class="se_doc_header_start"')) {
+        parseSE3(serverData);
+      } else {
+        parseSE2(serverData);
+      }
+    });
+  }).end();
 };
 
 function parseSE2(dataHTML) {
