@@ -1,52 +1,53 @@
 const http = require('http');
 const https = require('https');
-const jsdom = require('jsdom');
+const cheerio = require('cheerio');
 
-const { JSDOM } = jsdom;
-
-function commonParse(serverData, TagOptions){
+function commonParse(serverData, TagOptions) {
   try {
     let title;
     let content;
-    const dom = new JSDOM(serverData);
+    const $ = cheerio.load(serverData);
+
     if (TagOptions.title) {
       switch (TagOptions.title.type) {
         case 'tag':
-          title = dom.window.document.getElementsByTagName(`${TagOptions.title.name}`).content;
+          title = `${TagOptions.title.name}`;
           break;
         case 'id':
-          title = dom.window.document.getElementById(`${TagOptions.title.name}`).content;
+          title = `#${TagOptions.title.name}`;
           break;
         case 'class':
-          title = dom.window.document.getElementsByClassName(`${TagOptions.title.name}`).content;
+          title = `.${TagOptions.title.name}`;
           break;
         case 'name':
-          title = dom.window.document.getElementsByName(`${TagOptions.title.name}`).content;
+          title = `${TagOptions.title.tagName}[name=${TagOptions.title.name}]`;
           break;
         default:
-          title = dom.window.document.querySelector(`${TagOptions.title.name}`).content;
+          title = `${TagOptions.title.name}`;
           break;
       }
+      title = $(`${title}`).text() || $(`${title}`).val();
     }
 
     if (TagOptions.content) {
       switch (TagOptions.content.type) {
         case 'tag':
-          content = dom.window.document.getElementsByTagName(`${TagOptions.content.name}`);
+          content = `${TagOptions.content.name}`;
           break;
         case 'id':
-          content = dom.window.document.getElementById(`${TagOptions.content.name}`);
+          content = `#${TagOptions.content.name}`;
           break;
         case 'class':
-          content = dom.window.document.getElementsByClassName(`${TagOptions.content.name}`);
+          content = `.${TagOptions.content.name}`;
           break;
         case 'name':
-          content = dom.window.document.getElementsByName(`${TagOptions.content.name}`);
+          content = `${TagOptions.content.tagName}[name=${TagOptions.content.name}]`;
           break;
         default:
-          content = dom.window.document.querySelector(`${TagOptions.content.name}`);
+          content = `${TagOptions.content.name}`;
           break;
       }
+      content = $(`${title}`).html();
     }
 
     if (!content) {
@@ -55,8 +56,8 @@ function commonParse(serverData, TagOptions){
     console.log(title);
     console.log(content);
     return {
-      title: title.outerHTML,
-      content: content.outerHTML,
+      title,
+      content,
     };
   } catch (ex) {
     console.log(ex);
