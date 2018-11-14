@@ -5,8 +5,8 @@ const commonParser = require('./parser_module/commonParser');
 
 module.exports = {
   parse: (_url, type, TagOptions) => {
+    let templateObj;
     const parsedObj = url.parse(_url);
-    let templateObj = {};
     if (parsedObj.host.includes('naver') || type === 'naver') {
       templateObj = naverParser.parse(parsedObj);
     } else if (parsedObj.host.includes('tistory') || type === 'tistory') {
@@ -14,6 +14,7 @@ module.exports = {
     } else {
       templateObj = commonParser.parse(parsedObj, TagOptions);
     }
+    console.log(templateObj);
     return templateObj;
   },
 };

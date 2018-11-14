@@ -12,4 +12,4 @@ const tagoption = {
 };
 
 // parser.parse('http://happygrammer.tistory.com/150');
-parser.parse('https://www.thewordcracker.com/basic/disqus/', null, tagoption);
+parser.parse('https://blog.naver.com/kyozzang20/221326854125', null, tagoption);

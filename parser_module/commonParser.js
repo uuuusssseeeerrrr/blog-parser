@@ -53,14 +53,11 @@ function commonParse(serverData, TagOptions) {
     if (!content) {
       return new Error('컨텐츠를 찾을 수 없습니다');
     }
-    console.log(title);
-    console.log(content);
     return {
       title,
       content,
     };
   } catch (ex) {
-    console.log(ex);
     return ex;
   }
 }
