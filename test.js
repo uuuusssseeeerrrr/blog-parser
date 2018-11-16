@@ -12,4 +12,4 @@ const tagoption = {
 };
 
 // parser.parse('http://happygrammer.tistory.com/150');
-parser.parse('https://blog.naver.com/kyozzang20/221326854125', null, tagoption);
+parser.parse('http://jeong-pro.tistory.com/57');
