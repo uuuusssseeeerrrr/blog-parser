@@ -1,6 +1,7 @@
 const url = require('url');
 const naverParser = require('./parser_module/naverParser');
 const tistoryParser = require('./parser_module/tistoryParser');
+const daumParser = require('./parser_module/daumParser');
 const commonParser = require('./parser_module/commonParser');
 
 module.exports = {
@@ -11,6 +12,8 @@ module.exports = {
       templateObj = naverParser.parse(parsedObj);
     } else if (parsedObj.host.includes('tistory') || type === 'tistory') {
       templateObj = tistoryParser.parse(parsedObj);
+    } else if (parsedObj.host.includes('daum') || type === 'daum') {
+      templateObj = daumParser.parse(parsedObj);
     } else {
       templateObj = commonParser.parse(parsedObj, TagOptions);
     }
