@@ -1,15 +1,19 @@
-const request = require('request');
+const rp = require('request-promise');
 const cheerio = require('cheerio');
 
-// function parse(serverData) {
-//   return cheerio.load(serverData);
-// }
-
-exports.parse = (url) => {
-  request(url, (error, response, html) => {
-    if (error) { throw error; }
+async function parse(url) {
+  const data1 = await rp.get(url.href).then((html) => {
     const $ = cheerio.load(html);
-    url = $('frame[name=BlogMain]').attr('src');
-    console.log(url);
+    return `${url.protocol}//${url.host}${$('frame[name=BlogMain]').attr('src')}`;
   });
-};
+  await rp.get(data1).then((html) => {
+    const $ = cheerio.load(html);
+    const title = $('title').text();
+    const content = $('#contentDiv').html();
+    console.log(title);
+    console.log(content);
+    return { title, content };
+  });
+}
+
+exports.parse = url => parse(url);
