@@ -36,8 +36,7 @@ function parse(serverData) {
   if (!content) {
     return new Error('tistory 컨텐츠가 없습니다. 본문 같이 customparse메소드를 사용해주세요');
   }
-  console.log(title);
-  console.log(content);
+
   return {
     title,
     content,

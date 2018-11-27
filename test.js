@@ -11,4 +11,6 @@ const parser = require('./parser');
 // };
 
 // parser.parse('http://happygrammer.tistory.com/150');
-parser.parse('http://blog.daum.net/kkkho2/104?t__nil_best=down');
+const result = parser.parse('http://blog.daum.net/kkkho2/104?t__nil_best=down');
+console.log(result.title);
+console.log(result.content);

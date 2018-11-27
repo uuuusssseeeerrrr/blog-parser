@@ -17,7 +17,7 @@ module.exports = {
     } else {
       templateObj = commonParser.parse(parsedObj, TagOptions);
     }
-    console.log(templateObj);
+
     return templateObj;
   },
 };
