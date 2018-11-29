@@ -3,6 +3,7 @@ const naverParser = require('./parser_module/naverParser');
 const tistoryParser = require('./parser_module/tistoryParser');
 const daumParser = require('./parser_module/daumParser');
 const commonParser = require('./parser_module/commonParser');
+const mediumParser = require('./parser_module/mediumParser');
 
 module.exports = {
   parse: (_url, type, TagOptions) => {
@@ -15,7 +16,7 @@ module.exports = {
     } else if (parsedObj.host.includes('daum') || type === 'daum') {
       templateObj = daumParser.parse(parsedObj);
     } else if (parsedObj.host.includes('medium') || type === 'medium') {
-      templateObj = daumParser.parse(parsedObj);
+      templateObj = mediumParser.parse(parsedObj);
     } else {
       templateObj = commonParser.parse(parsedObj, TagOptions);
     }

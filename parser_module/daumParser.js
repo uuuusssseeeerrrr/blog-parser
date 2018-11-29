@@ -4,13 +4,13 @@ const cheerio = require('cheerio');
 async function parse(url) {
   const outerFrameURL = await rp.get(url.href).then((html) => {
     const $ = cheerio.load(html);
-    return `${url.protocol}//${url.host}${$('frame[name=BlogMain]').attr('src')}`;
-  });
+    return `http://blog.daum.net/${$('frame[name=BlogMain]').attr('src')}`;
+  }).catch((error) => { console.log(error); });
 
   const innerFrameURL = await rp.get(outerFrameURL).then((html) => {
     const $ = cheerio.load(html);
-    return `${url.protocol}//${url.host}${$('#if_b_104').attr('src')}`;
-  });
+    return `http://blog.daum.net/${$("#cContentBody").find('iframe').attr('src')}`;
+  }).catch((error) => { console.log(error); });
 
   const result = await rp.get(innerFrameURL).then((html) => {
     const $ = cheerio.load(html);
