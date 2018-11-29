@@ -12,5 +12,8 @@ exports.parse = async (url) => {
     method: 'GET',
   });
 
-  return result;
+  return {
+    title: $('title').text(),
+    content: $('.sectionLayout--insetColumn').text(),
+  };
 };
