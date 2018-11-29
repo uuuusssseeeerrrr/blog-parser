@@ -14,6 +14,8 @@ module.exports = {
       templateObj = tistoryParser.parse(parsedObj);
     } else if (parsedObj.host.includes('daum') || type === 'daum') {
       templateObj = daumParser.parse(parsedObj);
+    } else if (parsedObj.host.includes('medium') || type === 'medium') {
+      templateObj = daumParser.parse(parsedObj);
     } else {
       templateObj = commonParser.parse(parsedObj, TagOptions);
     }
