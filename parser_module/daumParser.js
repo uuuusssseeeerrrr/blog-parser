@@ -1,34 +1,48 @@
-const rp = require('request-promise-native');
+const http = require('http');
 const cheerio = require('cheerio');
 
-function firstUrlInit(html) {
-  const $ = cheerio.load(html);
-  return `http://blog.daum.net/${$('frame[name=BlogMain]').attr('src')}`;
+function resultInit(url) {
+  let serverData;
+  http.get(url, (response) => {
+    response.on('data', (chunk) => {
+      serverData += chunk;
+    });
+    response.on('end', () => {
+      const $ = cheerio.load(serverData);
+      return {
+        title: $('title').text(),
+        content: $('#contentDiv').html(),
+      };
+    });
+  }).end();
 }
 
-function secondUrlInit(html) {
-  const $ = cheerio.load(html);
-  return `http://blog.daum.net/${$('#cContentBody').find('iframe').attr('src')}`;
+function secondUrlInit(url) {
+  let serverData;
+  http.get(url, (response) => {
+    response.on('data', (chunk) => {
+      serverData += chunk;
+    });
+    response.on('end', () => {
+      const $ = cheerio.load(serverData);
+      const nextUrl = `http://blog.daum.net/${$('#cContentBody').find('iframe').attr('src')}`;
+      resultInit(nextUrl);
+    });
+  }).end();
 }
 
-function resultInit(html) {
-  const $ = cheerio.load(html);
-  return {
-    title: $('title').text(),
-    content: $('#contentDiv').html(),
-  };
+function firstUrlInit(url) {
+  let serverData;
+  http.get(url, (response) => {
+    response.on('data', (chunk) => {
+      serverData += chunk;
+    });
+    response.on('end', () => {
+      const $ = cheerio.load(serverData);
+      const nextUrl = `http://blog.daum.net/${$('frame[name=BlogMain]').attr('src')}`;
+      secondUrlInit(nextUrl);
+    });
+  }).end();
 }
 
-async function getData(url) {
-  let targetUrl = firstUrlInit(await rp.get(url.href))
-  console.log(targetUrl);
-  targetUrl = secondUrlInit(await rp.get(targetUrl));
-  console.log(targetUrl);
-  const result = resultInit(await rp.get(targetUrl));
-  console.log(result);
-  return result;
-}
-
-exports.parse = (url) => {
-  getData(url).then(html => html);
-};
+exports.parse = url => firstUrlInit(url.href);
