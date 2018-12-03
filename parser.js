@@ -14,7 +14,7 @@ module.exports = {
     } else if (parsedObj.host.includes('tistory') || type === 'tistory') {
       templateObj = tistoryParser.parse(parsedObj);
     } else if (parsedObj.host.includes('daum') || type === 'daum') {
-      templateObj = daumParser.parse(parsedObj).then(result => result);
+      templateObj = daumParser.parse(parsedObj);
     } else if (parsedObj.host.includes('medium') || type === 'medium') {
       templateObj = mediumParser.parse(parsedObj);
     } else {

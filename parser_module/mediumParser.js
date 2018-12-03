@@ -1,5 +1,5 @@
 const cheerio = require('cheerio');
-const rp = require('request-promise');
+const rp = require('request-promise-native');
 
 exports.parse = async (url) => {
   const $ = await rp({
