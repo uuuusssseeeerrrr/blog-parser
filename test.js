@@ -10,9 +10,10 @@ const parser = require('./parser');
 //   },
 // };
 
-const result = parser.parse('http://blog.daum.net/mc529/1410');
+parser.parse('http://blog.daum.net/mc529/1410').then((result) => {
+  console.log(result);
+});
 // const result2 = parser.parse('https://medium.com/s/story/the-monstrous-immorality-of-creating-genetically-engineered-babies-6c7e409c9490');
 
-console.log(result);
 // console.log(result.title);
 // console.log(result.content);
