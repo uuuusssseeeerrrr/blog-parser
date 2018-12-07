@@ -1,48 +1,27 @@
-const http = require('http');
+const rp = require('request-promise-native');
 const cheerio = require('cheerio');
 
-function resultInit(url) {
-  let serverData;
-  http.get(url, (response) => {
-    response.on('data', (chunk) => {
-      serverData += chunk;
-    });
-    response.on('end', () => {
-      const $ = cheerio.load(serverData);
-      return {
-        title: $('title').text(),
-        content: $('#contentDiv').html(),
-      };
-    });
-  }).end();
+function contentLoad(url) {
+  return rp.get(url)
+    .then(value => value)
+    .catch(error => error);
 }
 
-function secondUrlInit(url) {
-  let serverData;
-  http.get(url, (response) => {
-    response.on('data', (chunk) => {
-      serverData += chunk;
-    });
-    response.on('end', () => {
-      const $ = cheerio.load(serverData);
-      const nextUrl = `http://blog.daum.net/${$('#cContentBody').find('iframe').attr('src')}`;
-      resultInit(nextUrl);
-    });
-  }).end();
-}
-
-function firstUrlInit(url) {
-  let serverData;
-  http.get(url, (response) => {
-    response.on('data', (chunk) => {
-      serverData += chunk;
-    });
-    response.on('end', () => {
-      const $ = cheerio.load(serverData);
-      const nextUrl = `http://blog.daum.net/${$('frame[name=BlogMain]').attr('src')}`;
-      secondUrlInit(nextUrl);
-    });
-  }).end();
-}
-
-exports.parse = url => firstUrlInit(url.href);
+exports.parse = async (url) => {
+  try {
+    let html = await contentLoad(url.href);
+    let $ = await cheerio.load(html);
+    let nextUrl = `http://blog.daum.net/${$('frame[name=BlogMain]').attr('src')}`;
+    html = await contentLoad(nextUrl);
+    $ = await cheerio.load(html);
+    nextUrl = `http://blog.daum.net/${$('#cContentBody').find('iframe').attr('src')}`;
+    html = await contentLoad(nextUrl);
+    $ = await cheerio.load(html);
+    return {
+      title: $('title').text(),
+      content: $('#contentDiv').html(),
+    };
+  } catch (err) {
+    return err;
+  }
+};
