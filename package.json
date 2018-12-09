@@ -24,9 +24,7 @@
   },
   "homepage": "https://github.com/uuuusssseeeerrrr/blog-parser#readme",
   "dependencies": {
-    "cheerio": "^1.0.0-rc.2",
-    "request": "^2.88.0",
-    "request-promise-native": "^1.0.5"
+    "cheerio": "^1.0.0-rc.2"
   },
   "devDependencies": {
     "eslint": "^5.8.0",
