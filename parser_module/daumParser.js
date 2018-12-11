@@ -1,20 +1,25 @@
 const rp = require('request-promise-native');
 const cheerio = require('cheerio');
 
-function contentLoad(url) {
-  return rp.get(url)
-    .then(value => value)
-    .catch(error => error);
+async function contentLoad(url) {
+  try {
+    const htmlData = await rp.get(url);
+    return htmlData;
+  } catch (err) {
+    throw err;
+  }
 }
 
-exports.parse = async (url) => {
+async function blogParse(url) {
   try {
-    let html = await contentLoad(url.href);
+    let html = await contentLoad(url);
     let $ = await cheerio.load(html);
-    let nextUrl = `http://blog.daum.net/${$('frame[name=BlogMain]').attr('src')}`;
+    let src = $('frame[name=BlogMain]').attr('src');
+    let nextUrl = `http://blog.daum.net/${src}`;
     html = await contentLoad(nextUrl);
     $ = await cheerio.load(html);
-    nextUrl = `http://blog.daum.net/${$('#cContentBody').find('iframe').attr('src')}`;
+    src = $('#cContentBody').find('iframe').attr('src');
+    nextUrl = `http://blog.daum.net/${src}`;
     html = await contentLoad(nextUrl);
     $ = await cheerio.load(html);
     return {
@@ -24,4 +29,6 @@ exports.parse = async (url) => {
   } catch (err) {
     return err;
   }
-};
+}
+
+exports.parse = (url) => { blogParse(url.href); };
