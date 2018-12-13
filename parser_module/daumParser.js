@@ -31,4 +31,4 @@ async function blogParse(url) {
   }
 }
 
-exports.parse = (url) => { blogParse(url.href); };
+exports.parse = url => blogParse(url.href);
