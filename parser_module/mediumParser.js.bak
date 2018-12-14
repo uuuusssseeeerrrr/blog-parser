@@ -1,0 +1,31 @@
+const cheerio = require('cheerio');
+const rpn = require('request-promise-native');
+
+function contentFilter(html) {
+  const $ = cheerio.load(html);
+  const title = $('title').text();
+  const content = $('.sectionLayout--insetColumn').text();
+  return { title, content };
+}
+
+exports.parse = (url) => {
+  let serverData;
+
+  rpn.get(
+  
+  const options = {
+    uri: url.href,
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+  };
+  return https.get(options, (response) => {
+    response.on('data', (chunk) => {
+      serverData += chunk;
+    });
+    response.on('end', () => {
+      contentFilter(serverData);
+    });
+  }).end();
+};
