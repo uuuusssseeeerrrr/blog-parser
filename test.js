@@ -10,8 +10,12 @@ const parser = require('./parser');
 //   },
 // };
 
-parser.parse('https://medium.com/@minsoogwak/i-am-a-full-stack-developer-836119359410').then((value) => {console.log(value)});
-// const result = parser.parse('https://blog.naver.com/pjh731/221419121474');
+// parser.parse('https://blog.naver.com/kyozzang20/221326855122');
+const result = parser.parse('https://blog.naver.com/pjh731/221419121474');
+console.log(result);
+// parser.parse('https://blog.naver.com/pjh731/221419121474').then((obj) => {
+// console.log(obj);
+// });
 // const result2 = parser.parse('https://medium.com/s/story/the-monstrous-immorality-of-creating-genetically-engineered-babies-6c7e409c9490');
 // console.log(result.title);
 // console.log(result.content);
