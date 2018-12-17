@@ -11,9 +11,9 @@ const parser = require('./parser');
 // };
 
 // parser.parse('https://blog.naver.com/kyozzang20/221326855122');
-const result = parser.parse('https://blog.naver.com/pjh731/221419121474').then((result) => {
+parser.parse('http://growinglastcanyon.tistory.com/10').then((result) => {
   console.log(result);
-})
+});
 
 // parser.parse('https://blog.naver.com/pjh731/221419121474').then((obj) => {
 // console.log(obj);

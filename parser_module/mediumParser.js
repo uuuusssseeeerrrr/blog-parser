@@ -2,7 +2,6 @@ const cheerio = require('cheerio');
 const rpn = require('request-promise-native');
 
 exports.parse = (url) => {
-  let serverData;
 
   const options = {
     uri: url.href,
@@ -11,11 +10,11 @@ exports.parse = (url) => {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
   };
-  
+
   return rpn.get(options).then((html) => {
-	  const $ = cheerio.load(html);
-	  const title = $('title').text();
-	  const content = $('.sectionLayout--insetColumn').text();
-	  return { title, content };  
+    const $ = cheerio.load(html);
+    const title = $('title').text();
+    const content = $('.sectionLayout--insetColumn').text();
+    return { title, content };
   });
 };

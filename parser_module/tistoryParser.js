@@ -1,26 +1,31 @@
 /* eslint-disable prefer-destructuring */
-const http = require('http');
-const https = require('https');
+const rpn = require('request-promise-native');
 const cheerio = require('cheerio');
 const tistoryConstJson = require('../parser_constraint/tistoryConstArray');
 
 function nextSibilingDelete(el, removeContentArray) {
+  let $ = el;
+  let k;
   for (let i = 0; i < removeContentArray.length; i += 1) {
-    if (el.querySelector(removeContentArray[i]) != null) {
-      while (el.querySelector(removeContentArray[i]).nextSibling) {
-        el.querySelector(removeContentArray[i]).nextSibling.remove();
+    if (typeof el === 'string') {
+      $ = cheerio.load(el);
+    }
+    if ($(removeContentArray[i]) != null) {
+      while ($(removeContentArray[i]).next().length > 0) {
+        k = $(removeContentArray[i]).next().remove().html();
       }
-      el.querySelector(removeContentArray[i]).remove();
+      $(removeContentArray[i]).remove();
     }
   }
-  return el;
+  console.log(k);
+  return $.html();
 }
 
-function parse(serverData) {
+function parse(html) {
   const contentArrayList = tistoryConstJson.contentArray;
   const removeContentArray = tistoryConstJson.removeContentArray;
   let content;
-  const $ = cheerio.load(serverData);
+  const $ = cheerio.load(html);
   const title = $("meta[property='og:title']").attr('content');
 
   if (contentArrayList) {
@@ -43,20 +48,7 @@ function parse(serverData) {
   };
 }
 
-exports.parse = (url) => {
-  let HTTPModule;
-  let serverData;
-  if (url.protocol.indexOf('https') > -1) {
-    HTTPModule = https;
-  } else {
-    HTTPModule = http;
-  }
-  HTTPModule.get(url.href, (response) => {
-    response.on('data', (chunk) => {
-      serverData += chunk;
-    });
-    response.on('end', () => {
-      parse(serverData);
-    });
-  }).end();
+exports.parse = async (url) => {
+  const html = await rpn.get(url.href);
+  return parse(html);
 };
