@@ -5,27 +5,31 @@ const tistoryConstJson = require('../parser_constraint/tistoryConstArray');
 
 function nextSibilingDelete(el, removeContentArray) {
   let $ = el;
-  let k;
+  let html = el;
+  let removeTarget;
   for (let i = 0; i < removeContentArray.length; i += 1) {
     if (typeof el === 'string') {
       $ = cheerio.load(el);
     }
-    if ($(removeContentArray[i]) != null) {
+    if ($(removeContentArray[i]).length > 0) {
       while ($(removeContentArray[i]).next().length > 0) {
-        k = $(removeContentArray[i]).next().remove().html();
+        removeTarget = $(removeContentArray[i]).next().html();
+        $(removeContentArray[i]).next().remove();
+        html = html.replace(removeTarget, '');
       }
-      $(removeContentArray[i]).remove();
+      removeTarget = $(removeContentArray[i]).remove();
+      html = html.replace(removeTarget, '');
     }
   }
-  console.log(k);
-  return $.html();
+  return html;
 }
 
-function parse(html) {
+async function parse(url) {
   const contentArrayList = tistoryConstJson.contentArray;
   const removeContentArray = tistoryConstJson.removeContentArray;
   let content;
-  const $ = cheerio.load(html);
+  const html = await rpn.get(url);
+  const $ = await cheerio.load(html);
   const title = $("meta[property='og:title']").attr('content');
 
   if (contentArrayList) {
@@ -35,7 +39,7 @@ function parse(html) {
         break;
       }
     }
-    content = nextSibilingDelete(content, removeContentArray);
+    content = await nextSibilingDelete(content, removeContentArray);
   }
 
   if (!content) {
@@ -48,7 +52,6 @@ function parse(html) {
   };
 }
 
-exports.parse = async (url) => {
-  const html = await rpn.get(url.href);
-  return parse(html);
+exports.parse = (url) => {
+  return parse(url.href);
 };
