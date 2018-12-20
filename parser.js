@@ -4,6 +4,8 @@ const tistoryParser = require('./parser_module/tistoryParser');
 const daumParser = require('./parser_module/daumParser');
 const commonParser = require('./parser_module/commonParser');
 const mediumParser = require('./parser_module/mediumParser');
+const bloggerParser = require('./parser_module/bloggerParser');
+
 
 module.exports = {
   parse: (_url, type, TagOptions) => {
@@ -17,7 +19,11 @@ module.exports = {
       templateObj = daumParser.parse(parsedObj);
     } else if (parsedObj.host.includes('medium') || type === 'medium') {
       templateObj = mediumParser.parse(parsedObj);
-    } else {
+    } else if (parsedObj.host.includes('blogger') || type === 'blogger') {
+      templateObj = bloggerParser.parse(parsedObj);
+    } 
+    
+    else {
       templateObj = commonParser.parse(parsedObj, TagOptions);
     }
 
