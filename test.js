@@ -11,7 +11,7 @@ const parser = require('./parser');
 // };
 
 // parser.parse('https://blog.naver.com/kyozzang20/221326855122');
-parser.parse('http://growinglastcanyon.tistory.com/10').then((result) => {
+parser.parse('https://junistory.blogspot.com/2017/08/blog-post_24.html').then((result) => {
   console.log(result);
 });
 

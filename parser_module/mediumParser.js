@@ -2,7 +2,6 @@ const cheerio = require('cheerio');
 const rpn = require('request-promise-native');
 
 exports.parse = (url) => {
-
   const options = {
     uri: url.href,
     headers: {

@@ -19,11 +19,10 @@ module.exports = {
       templateObj = daumParser.parse(parsedObj);
     } else if (parsedObj.host.includes('medium') || type === 'medium') {
       templateObj = mediumParser.parse(parsedObj);
-    } else if (parsedObj.host.includes('blogger') || type === 'blogger') {
+    } else if (parsedObj.host.includes('blogger') || parsedObj.host.includes('blogspot')
+    || type === 'blogger') {
       templateObj = bloggerParser.parse(parsedObj);
-    } 
-    
-    else {
+    } else {
       templateObj = commonParser.parse(parsedObj, TagOptions);
     }
 
