@@ -22,6 +22,8 @@ module.exports = {
     } else if (parsedObj.host.includes('blogger') || parsedObj.host.includes('blogspot')
     || type === 'blogger') {
       templateObj = bloggerParser.parse(parsedObj);
+    } else if (type === 'wordpress') {
+      templateObj = commonParser.parse(parsedObj, TagOptions);
     } else {
       templateObj = commonParser.parse(parsedObj, TagOptions);
     }
