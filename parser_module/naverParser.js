@@ -8,15 +8,24 @@ exports.parse = async (url) => {
   const targetURL = `https://blog.naver.com/PostView.nhn?blogId=${splitTarget[1]}&logNo=${splitTarget[2]}`;
   const html = await rpn.get(targetURL);
   const $ = await cheerio.load(html);
-  if ($('.se_doc_header_start').length > 0) {
-    result = parseSE3(html);
-  } else {
-    result = parseSE2(html);
+
+  // eslint-disable-next-line default-case
+  switch ($('#post_1').attr('data-post-editor-version')) {
+    case '2':
+      result = parseV2(html);
+      break;
+    case '3':
+      result = parseV3(html);
+      break;
+    case '4':
+      result = parseV4(html);
+      break;
   }
+
   return result;
 };
 
-function parseSE2(html) {
+function parseV2(html) {
   const $ = cheerio.load(html);
   const title = $('.pcol1').html();
   const content = $('#postViewArea').html();
@@ -25,11 +34,21 @@ function parseSE2(html) {
   };
 }
 
-function parseSE3(html) {
+function parseV3(html) {
   const $ = cheerio.load(html);
   const title = $('h3.se_textarea').html();
   let content = "<link rel='stylesheet' href='https://ssl.pstatic.net/static.editor/static/viewer/common/se_viewer_blog_pc.css'/>";
   content += $('div.sect_dsc').html();
+  return {
+    title, content,
+  };
+}
+
+function parseV4(html) {
+  const $ = cheerio.load(html);
+  const title = $('div.pcol1 span').text();
+  let content = "<link rel='stylesheet' href='https://ssl.pstatic.net/static.editor/static/viewer/common/se_viewer_blog_pc.css'/>";
+  content += $('div.se-main-container').html();
   return {
     title, content,
   };

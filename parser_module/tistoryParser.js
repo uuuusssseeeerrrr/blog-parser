@@ -52,6 +52,4 @@ async function parse(url) {
   };
 }
 
-exports.parse = (url) => {
-  return parse(url.href);
-};
+exports.parse = url => parse(url.href);
