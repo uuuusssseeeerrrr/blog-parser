@@ -38,6 +38,7 @@ function parseV3(html) {
   const $ = cheerio.load(html);
   const title = $('h3.se_textarea').html();
   let content = "<link rel='stylesheet' href='https://ssl.pstatic.net/static.editor/static/viewer/common/se_viewer_blog_pc.css'/>";
+  content += "<link rel='stylesheet' href='https://editor-static.pstatic.net//v/blog/css/se.viewer.desktop.css'/>";
   content += $('div.sect_dsc').html();
   return {
     title, content,
@@ -48,6 +49,7 @@ function parseV4(html) {
   const $ = cheerio.load(html);
   const title = $('div.pcol1 span').text();
   let content = "<link rel='stylesheet' href='https://ssl.pstatic.net/static.editor/static/viewer/common/se_viewer_blog_pc.css'/>";
+  content += "<link rel='stylesheet' href='https://editor-static.pstatic.net//v/blog/css/se.viewer.desktop.css'/>";
   content += $('div.se-main-container').html();
   return {
     title, content,
