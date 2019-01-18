@@ -5,6 +5,9 @@ exports.parse = (url) => {
   rp.get(url.href).then((result, reject) => {
     if (reject) throw reject;
     const $ = cheerio.load(result);
-    console.log($);
+    return {
+      title: $('h1.entry-title').text(),
+      content: $('section.content').html(),
+    };
   });
 };
