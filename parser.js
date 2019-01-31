@@ -5,6 +5,7 @@ const daumParser = require('./parser_module/daumParser');
 const commonParser = require('./parser_module/commonParser');
 const mediumParser = require('./parser_module/mediumParser');
 const bloggerParser = require('./parser_module/bloggerParser');
+const wordpressParser = require('./parser_module/wordpressParser');
 
 const TYPE_NAVER = 0;
 const TYPE_TISTORY = 1;
@@ -20,9 +21,6 @@ module.exports = {
   TYPE_MEDIUM,
   TYPE_BLOGGER,
   TYPE_WORDPRESS,
-};
-
-module.exports = {
   parse: (_url, type, TagOptions) => {
     let templateObj;
     const parsedObj = url.parse(_url);
@@ -38,7 +36,7 @@ module.exports = {
     || type === TYPE_BLOGGER) {
       templateObj = bloggerParser.parse(parsedObj);
     } else if (type === TYPE_WORDPRESS) {
-      templateObj = commonParser.parse(parsedObj, TagOptions);
+      templateObj = wordpressParser.parse(parsedObj, TagOptions);
     } else {
       templateObj = commonParser.parse(parsedObj, TagOptions);
     }
