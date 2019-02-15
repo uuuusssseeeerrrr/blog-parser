@@ -1,5 +1,6 @@
 const rp = require('request-promise-native');
 const cheerio = require('cheerio');
+const ResultObject = require('./resultObject');
 
 async function contentLoad(url) {
   try {
@@ -22,10 +23,7 @@ async function blogParse(url) {
     nextUrl = `http://blog.daum.net/${src}`;
     html = await contentLoad(nextUrl);
     $ = await cheerio.load(html);
-    return {
-      title: $('title').text(),
-      content: $('#contentDiv').html(),
-    };
+    return new ResultObject($('title').text(), $('#contentDiv').html());
   } catch (err) {
     return err;
   }

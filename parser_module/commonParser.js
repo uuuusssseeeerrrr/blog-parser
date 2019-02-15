@@ -1,6 +1,7 @@
 const http = require('http');
 const https = require('https');
 const cheerio = require('cheerio');
+const ResultObject = require('./resultObject');
 
 function commonParse(serverData, TagOptions) {
   try {
@@ -53,10 +54,7 @@ function commonParse(serverData, TagOptions) {
     if (!content) {
       return new Error('컨텐츠를 찾을 수 없습니다');
     }
-    return {
-      title,
-      content,
-    };
+    return new ResultObject(title, content);
   } catch (ex) {
     return ex;
   }

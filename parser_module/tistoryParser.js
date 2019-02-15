@@ -2,6 +2,7 @@
 const rpn = require('request-promise-native');
 const cheerio = require('cheerio');
 const tistoryConstJson = require('../parser_constraint/tistoryConstArray');
+const ResultObject = require('./resultObject');
 
 function nextSibilingDelete(el, removeContentArray) {
   let $ = el;
@@ -46,10 +47,7 @@ async function parse(url) {
     return new Error('tistory 컨텐츠가 없습니다. 본문 같이 customparse메소드를 사용해주세요');
   }
 
-  return {
-    title,
-    content,
-  };
+  return new ResultObject(title, content);
 }
 
 exports.parse = url => parse(url.href);

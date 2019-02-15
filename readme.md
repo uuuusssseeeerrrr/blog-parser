@@ -5,7 +5,7 @@
 This Module is global Blog Parser Module.
 if you are offer BLOG URL, Module will parse BLOG and serve `{title, Content}` Object.
 
-This Parser support `NAVER, TISTORY, DAUM, MEDIUM, BLOGGER, WORDPRESS` BLOG and support JS Promise Pattern only.
+This Parser support `NAVER, TISTORY, DAUM, MEDIUM, BLOGGER, WORDPRESS` BLOG and support JS Promise Pattern only.(25/02/2019)
 
 ## HOW TO USE
 

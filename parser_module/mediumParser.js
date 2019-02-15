@@ -1,5 +1,6 @@
 const cheerio = require('cheerio');
 const rpn = require('request-promise-native');
+const ResultObject = require('./resultObject');
 
 exports.parse = (url) => {
   const options = {
@@ -14,6 +15,6 @@ exports.parse = (url) => {
     const $ = cheerio.load(html);
     const title = $('title').text();
     const content = $('.sectionLayout--insetColumn').text();
-    return { title, content };
+    return new ResultObject(title, content);
   });
 };

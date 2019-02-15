@@ -3,3 +3,11 @@ package-lock.json
 .vscode/launch.json
 test.js
 .eslintrc.json
+.idea/blogparser.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml
+.idea/codeStyles/Project.xml
+.idea/codeStyles/codeStyleConfig.xml
+.idea/inspectionProfiles/Project_Default.xml

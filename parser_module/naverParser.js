@@ -1,6 +1,7 @@
 /* eslint no-use-before-define: ["error", { "functions": false }] */
 const rpn = require('request-promise-native');
 const cheerio = require('cheerio');
+const ResultObject = require('./resultObject');
 
 exports.parse = async (url) => {
   let result;
@@ -29,9 +30,7 @@ function parseV2(html) {
   const $ = cheerio.load(html);
   const title = $('.pcol1').html();
   const content = $('#postViewArea').html();
-  return {
-    title, content,
-  };
+  return new ResultObject(title, content);
 }
 
 function parseV3(html) {
@@ -40,9 +39,7 @@ function parseV3(html) {
   let content = "<link rel='stylesheet' href='https://ssl.pstatic.net/static.editor/static/viewer/common/se_viewer_blog_pc.css'/>";
   content += "<link rel='stylesheet' href='https://editor-static.pstatic.net//v/blog/css/se.viewer.desktop.css'/>";
   content += $('div.sect_dsc').html();
-  return {
-    title, content,
-  };
+  return new ResultObject(title, content);
 }
 
 function parseV4(html) {
@@ -51,7 +48,5 @@ function parseV4(html) {
   let content = "<link rel='stylesheet' href='https://ssl.pstatic.net/static.editor/static/viewer/common/se_viewer_blog_pc.css'/>";
   content += "<link rel='stylesheet' href='https://editor-static.pstatic.net//v/blog/css/se.viewer.desktop.css'/>";
   content += $('div.se-main-container').html();
-  return {
-    title, content,
-  };
+  return new ResultObject(title, content);
 }
