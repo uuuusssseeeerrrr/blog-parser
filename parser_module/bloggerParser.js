@@ -1,8 +1,8 @@
-const rp = require('request-promise-native');
+const rpn = require('request-promise-native');
 const cheerio = require('cheerio');
-const ResultObject = require('./resultObject');
+const ResultObject = require('../parser_option/resultObject');
 
-exports.parse = url => rp.get(url.href).then((result, reject) => {
+exports.parse = url => rpn.get(url.href).then((result, reject) => {
   if (reject) {
     throw reject;
   }

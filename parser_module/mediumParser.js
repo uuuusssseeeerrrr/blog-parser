@@ -1,6 +1,6 @@
 const cheerio = require('cheerio');
 const rpn = require('request-promise-native');
-const ResultObject = require('./resultObject');
+const ResultObject = require('../parser_option/resultObject');
 
 exports.parse = (url) => {
   const options = {

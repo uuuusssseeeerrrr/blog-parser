@@ -1,7 +1,7 @@
 {
   "name": "blogparser",
   "version": "1.0.0",
-  "description": "blog parser for KR",
+  "description": "blog parser",
   "main": "parser.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

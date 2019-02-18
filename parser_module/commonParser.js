@@ -1,7 +1,6 @@
-const http = require('http');
-const https = require('https');
+const rpn = require('request-promise-native');
 const cheerio = require('cheerio');
-const ResultObject = require('./resultObject');
+const ResultObject = require('../parser_option/resultObject');
 
 function commonParse(serverData, TagOptions) {
   try {
@@ -11,20 +10,20 @@ function commonParse(serverData, TagOptions) {
 
     if (TagOptions.title) {
       switch (TagOptions.title.type) {
-        case 'tag':
-          title = `${TagOptions.title.name}`;
+        case 'custom':
+          title = `${TagOptions.title.value}`;
           break;
         case 'id':
-          title = `#${TagOptions.title.name}`;
+          title = `#${TagOptions.title.value}`;
           break;
         case 'class':
-          title = `.${TagOptions.title.name}`;
+          title = `.${TagOptions.title.value}`;
           break;
         case 'name':
-          title = `${TagOptions.title.tagName}[name=${TagOptions.title.name}]`;
+          title = `${TagOptions.title.tagName}[name=${TagOptions.title.value}]`;
           break;
         default:
-          title = `${TagOptions.title.name}`;
+          title = '';
           break;
       }
       title = $(`${title}`).text() || $(`${title}`).val();
@@ -32,48 +31,39 @@ function commonParse(serverData, TagOptions) {
 
     if (TagOptions.content) {
       switch (TagOptions.content.type) {
-        case 'tag':
-          content = `${TagOptions.content.name}`;
+        case 'custom':
+          content = `${TagOptions.content.value}`;
           break;
         case 'id':
-          content = `#${TagOptions.content.name}`;
+          content = `#${TagOptions.content.value}`;
           break;
         case 'class':
-          content = `.${TagOptions.content.name}`;
+          content = `.${TagOptions.content.value}`;
           break;
         case 'name':
-          content = `${TagOptions.content.tagName}[name=${TagOptions.content.name}]`;
+          content = `${TagOptions.content.tagName}[name=${TagOptions.content.value}]`;
           break;
         default:
-          content = `${TagOptions.content.name}`;
+          content = '';
           break;
       }
-      content = $(`${title}`).html();
+      content = $(`${content}`).html();
     }
 
     if (!content) {
-      return new Error('컨텐츠를 찾을 수 없습니다');
+      throw new Error('컨텐츠를 찾을 수 없습니다');
     }
     return new ResultObject(title, content);
   } catch (ex) {
-    return ex;
+    throw new Error(ex);
   }
 }
 
-exports.parse = (url, TagOptions) => {
-  let HTTPModule;
-  let serverData;
-  if (url.protocol.indexOf('https') > -1) {
-    HTTPModule = https;
-  } else {
-    HTTPModule = http;
+exports.parse = async (url, TagOptions) => {
+  try {
+    const serverData = await rpn.get(url.href);
+    await commonParse(serverData, TagOptions);
+  } catch (ex) {
+    console.log(ex);
   }
-  HTTPModule.get(url.href, (response) => {
-    response.on('data', (chunk) => {
-      serverData += chunk;
-    });
-    response.on('end', () => {
-      commonParse(serverData, TagOptions);
-    });
-  }).end();
 };

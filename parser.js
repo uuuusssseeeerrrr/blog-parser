@@ -7,14 +7,16 @@ const mediumParser = require('./parser_module/mediumParser');
 const bloggerParser = require('./parser_module/bloggerParser');
 const wordpressParser = require('./parser_module/wordpressParser');
 
-const TYPE_NAVER = 0;
-const TYPE_TISTORY = 1;
-const TYPE_DAUM = 2;
-const TYPE_MEDIUM = 3;
-const TYPE_BLOGGER = 4;
-const TYPE_WORDPRESS = 5;
+const TYPE_CUSTOM = 0;
+const TYPE_NAVER = 1;
+const TYPE_TISTORY = 2;
+const TYPE_DAUM = 3;
+const TYPE_MEDIUM = 4;
+const TYPE_BLOGGER = 5;
+const TYPE_WORDPRESS = 6;
 
 module.exports = {
+  TYPE_CUSTOM,
   TYPE_NAVER,
   TYPE_TISTORY,
   TYPE_DAUM,
@@ -24,6 +26,7 @@ module.exports = {
   parse: (_url, type, TagOptions) => {
     let templateObj;
     const parsedObj = url.parse(_url);
+
     if (parsedObj.host.includes('naver') || type === TYPE_NAVER) {
       templateObj = naverParser.parse(parsedObj);
     } else if (parsedObj.host.includes('tistory') || type === TYPE_TISTORY) {
@@ -37,7 +40,7 @@ module.exports = {
       templateObj = bloggerParser.parse(parsedObj);
     } else if (type === TYPE_WORDPRESS) {
       templateObj = wordpressParser.parse(parsedObj, TagOptions);
-    } else {
+    } else if (!type || type === TYPE_CUSTOM) {
       templateObj = commonParser.parse(parsedObj, TagOptions);
     }
     return templateObj;

@@ -1,8 +1,8 @@
 /* eslint-disable prefer-destructuring */
 const rpn = require('request-promise-native');
 const cheerio = require('cheerio');
-const tistoryConstJson = require('../parser_constraint/tistoryConstArray');
-const ResultObject = require('./resultObject');
+const tistoryConstJson = require('../parser_option/tistoryConstArray');
+const ResultObject = require('../parser_option/resultObject');
 
 function nextSibilingDelete(el, removeContentArray) {
   let $ = el;

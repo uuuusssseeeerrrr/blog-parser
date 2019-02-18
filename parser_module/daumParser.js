@@ -1,10 +1,10 @@
-const rp = require('request-promise-native');
+const rpn = require('request-promise-native');
 const cheerio = require('cheerio');
-const ResultObject = require('./resultObject');
+const ResultObject = require('../parser_option/resultObject');
 
 async function contentLoad(url) {
   try {
-    const htmlData = await rp.get(url);
+    const htmlData = await rpn.get(url);
     return htmlData;
   } catch (err) {
     throw err;

@@ -1,7 +1,7 @@
 /* eslint no-use-before-define: ["error", { "functions": false }] */
 const rpn = require('request-promise-native');
 const cheerio = require('cheerio');
-const ResultObject = require('./resultObject');
+const ResultObject = require('../parser_option/resultObject');
 
 exports.parse = async (url) => {
   let result;
