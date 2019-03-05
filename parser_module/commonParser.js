@@ -2,6 +2,12 @@ const rpn = require('request-promise-native');
 const cheerio = require('cheerio');
 const ResultObject = require('../parser_option/resultObject');
 
+function commonRemove(obj, tagName) {
+  const $ = cheerio.load(obj);
+  $(tagName).remove();
+  return $.html();
+}
+
 function commonParse(serverData, TagOptions) {
   try {
     let title;
@@ -48,10 +54,17 @@ function commonParse(serverData, TagOptions) {
           break;
       }
       content = $(`${content}`).html();
+
+      if (TagOptions.remove) {
+        if (typeof TagOptions.remove.tagName !== 'Array') {
+          throw new Error('remove tag not Array');
+        }
+        TagOptions.remove.tagName.forEach(tag => commonRemove(content, tag));
+      }
     }
 
     if (!content) {
-      throw new Error('컨텐츠를 찾을 수 없습니다');
+      throw new Error('cannot find Any Contents');
     }
     return new ResultObject(title, content);
   } catch (ex) {
