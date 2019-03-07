@@ -1,6 +1,6 @@
 {
   "name": "blogparser",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "blog parser",
   "main": "parser.js",
   "scripts": {
@@ -13,9 +13,7 @@
   "keywords": [
     "blog",
     "parser",
-    "naver",
-    "tistory",
-    "daum"
+    "blogparser"
   ],
   "author": "j",
   "license": "MIT",

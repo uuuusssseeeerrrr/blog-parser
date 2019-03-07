@@ -2,31 +2,40 @@ const rpn = require('request-promise-native');
 const cheerio = require('cheerio');
 const ResultObject = require('../parser_option/resultObject');
 
-function commonRemove(obj, tagName) {
+function commonRemove(obj, tagObj) {
   const $ = cheerio.load(obj);
-  $(tagName).remove();
+  const {value, type} = tagObj;
+  switch (type) {
+    case 'custom':
+      $(`${value}`).remove();
+      break;
+    case 'id':
+      $(`#${value}`).remove();
+      break;
+    case 'class':
+      $(`.${value}`).remove();
+      break;
+    default:
+      break;
+  }
   return $.html();
 }
 
-function commonParse(serverData, TagOptions) {
+function commonParse(serverData, tagOptions) {
   try {
     let title;
     let content;
     const $ = cheerio.load(serverData);
-
-    if (TagOptions.title) {
-      switch (TagOptions.title.type) {
+    if (tagOptions.title) {
+      switch (tagOptions.title.type) {
         case 'custom':
-          title = `${TagOptions.title.value}`;
+          title = `${tagOptions.title.value}`;
           break;
         case 'id':
-          title = `#${TagOptions.title.value}`;
+          title = `#${tagOptions.title.value}`;
           break;
         case 'class':
-          title = `.${TagOptions.title.value}`;
-          break;
-        case 'name':
-          title = `${TagOptions.title.tagName}[name=${TagOptions.title.value}]`;
+          title = `.${tagOptions.title.value}`;
           break;
         default:
           title = '';
@@ -35,19 +44,16 @@ function commonParse(serverData, TagOptions) {
       title = $(`${title}`).text() || $(`${title}`).val();
     }
 
-    if (TagOptions.content) {
-      switch (TagOptions.content.type) {
+    if (tagOptions.content) {
+      switch (tagOptions.content.type) {
         case 'custom':
-          content = `${TagOptions.content.value}`;
+          content = `${tagOptions.content.value}`;
           break;
         case 'id':
-          content = `#${TagOptions.content.value}`;
+          content = `#${tagOptions.content.value}`;
           break;
         case 'class':
-          content = `.${TagOptions.content.value}`;
-          break;
-        case 'name':
-          content = `${TagOptions.content.tagName}[name=${TagOptions.content.value}]`;
+          content = `.${tagOptions.content.value}`;
           break;
         default:
           content = '';
@@ -55,11 +61,15 @@ function commonParse(serverData, TagOptions) {
       }
       content = $(`${content}`).html();
 
-      if (TagOptions.remove) {
-        if (typeof TagOptions.remove.tagName !== 'Array') {
-          throw new Error('remove tag not Array');
+      if (tagOptions.remove) {
+        const obj = tagOptions.remove;
+        if (obj.constructor === Object) {
+          content = commonRemove(content, { value: tagOptions.remove.value, type: tagOptions.remove.type });
+        } else if (obj.constructor === Array) {
+          tagOptions.remove.forEach((tag) => {
+            content = commonRemove(content, tag);
+          });
         }
-        TagOptions.remove.tagName.forEach(tag => commonRemove(content, tag));
       }
     }
 
@@ -72,10 +82,16 @@ function commonParse(serverData, TagOptions) {
   }
 }
 
-exports.parse = async (url, TagOptions) => {
+exports.parse = async (url, tagOptions) => {
   try {
+    //check tagOpt is JSON
+    if(typeof tagOptions !== 'Object' && typeof tagOptions !== 'object'){
+      return false;
+    }
+
+    //execute
     const serverData = await rpn.get(url.href);
-    await commonParse(serverData, TagOptions);
+    await commonParse(serverData, tagOptions);
   } catch (ex) {
     console.log(ex);
   }
