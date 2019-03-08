@@ -7,7 +7,7 @@ if you are offer BLOG URL, Module will parse BLOG and serve `{title, Content}` O
 
 This Parser support `NAVER, TISTORY, DAUM, MEDIUM, BLOGGER, WORDPRESS` BLOG and support JS Promise Pattern only.(25/02/2019)
 
-## HOW TO USE
+## HOW TO USE(except common parser)
 
 > ModuleName.parse(URL, blogType, Options)
 
@@ -32,6 +32,35 @@ a.then(
     //TODO
 )
 ```
+
+## HOW TO USE(common parser)
+
+`commonParser` is made for sites that parser is not working.
+`parse` method is same the other parser but `options` parameter is need to working.
+`options` parameter have `title, contents, remove` properties and all property have attribute–value pairs named `value, type`.
+
+example)
+    ```
+    const tagoption = {
+      title: {
+        value: tagName,
+        type: tagtype,
+      },
+      content: {
+        value: tagName,
+        type: tagtype,
+      },
+      remove: [{
+        value: tagName,
+        type: tagtype,
+      }],
+    };
+    ```
+
+The rules for this parameter is:
+1. `value` property is what you want parse ID or className
+2. `type` property is unique HTML attribute name(id, class, custom)
+3. `remove` property is what you want remove attribute
 
 ## Finale
 
