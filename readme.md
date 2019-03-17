@@ -1,13 +1,13 @@
 # BLOGPARSER MODULE
 
-## Introduction
+### Introduction
 
 This Module is global Blog Parser Module.
 if you are offer BLOG URL, Module will parse BLOG and serve `{title, Content}` Object.
 
 This Parser support `NAVER, TISTORY, DAUM, MEDIUM, BLOGGER, WORDPRESS` BLOG and support JS Promise Pattern only.(25/02/2019)
 
-## HOW TO USE(except common parser)
+### HOW TO USE(except common parser)
 
 > ModuleName.parse(URL, blogType, Options)
 
@@ -33,7 +33,7 @@ a.then(
 )
 ```
 
-## HOW TO USE(common parser)
+### HOW TO USE(common parser)
 
 `commonParser` is made for sites that parser is not working.
 `parse` method is same the other parser but `options` parameter is need to working.
@@ -57,12 +57,14 @@ example)
     };
     ```
 
-The rules for this parameter is:
+This parameter is:
 1. `value` property is what you want parse ID or className
 2. `type` property is unique HTML attribute name(id, class, custom)
 3. `remove` property is what you want remove attribute
 
-## Finale
+
+
+
 
 EvenyThing Ask & Bug Report & Support Module : <a href="https://github.com/uuuusssseeeerrrr/blog-parser/issues">[GITHUB]</a>
 
