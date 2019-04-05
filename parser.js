@@ -7,40 +7,37 @@ const mediumParser = require('./parser_module/mediumParser');
 const bloggerParser = require('./parser_module/bloggerParser');
 const wordpressParser = require('./parser_module/wordpressParser');
 
-const TYPE_CUSTOM = 0;
-const TYPE_NAVER = 1;
-const TYPE_TISTORY = 2;
-const TYPE_DAUM = 3;
-const TYPE_MEDIUM = 4;
-const TYPE_BLOGGER = 5;
-const TYPE_WORDPRESS = 6;
+const BLOGTYPE = {
+  TYPE_CUSTOM : 0,
+  TYPE_NAVER : 1,
+  TYPE_TISTORY : 2,
+  TYPE_DAUM : 3,
+  TYPE_MEDIUM : 4,
+  TYPE_BLOGGER : 5,
+  TYPE_WORDPRESS : 6,
+}
 
 module.exports = {
-  TYPE_CUSTOM,
-  TYPE_NAVER,
-  TYPE_TISTORY,
-  TYPE_DAUM,
-  TYPE_MEDIUM,
-  TYPE_BLOGGER,
-  TYPE_WORDPRESS,
+  BLOGTYPE,
+
   parse: (_url, type, TagOptions) => {
     let templateObj;
     const parsedObj = url.parse(_url);
 
-    if (parsedObj.host.includes('naver') || type === TYPE_NAVER) {
+    if (parsedObj.host.includes('naver') || type === BLOGTYPE.TYPE_NAVER) {
       templateObj = naverParser.parse(parsedObj);
-    } else if (parsedObj.host.includes('tistory') || type === TYPE_TISTORY) {
+    } else if (parsedObj.host.includes('tistory') || type === BLOGTYPE.TYPE_TISTORY) {
       templateObj = tistoryParser.parse(parsedObj);
-    } else if (parsedObj.host.includes('daum') || type === TYPE_DAUM) {
+    } else if (parsedObj.host.includes('daum') || type === BLOGTYPE.TYPE_DAUM) {
       templateObj = daumParser.parse(parsedObj);
-    } else if (parsedObj.host.includes('medium') || type === TYPE_MEDIUM) {
+    } else if (parsedObj.host.includes('medium') || type === BLOGTYPE.TYPE_MEDIUM) {
       templateObj = mediumParser.parse(parsedObj);
     } else if (parsedObj.host.includes('blogger') || parsedObj.host.includes('blogspot')
-    || type === TYPE_BLOGGER) {
+    || type === BLOGTYPE.TYPE_BLOGGER) {
       templateObj = bloggerParser.parse(parsedObj);
-    } else if (type === TYPE_WORDPRESS) {
+    } else if (type === BLOGTYPE.TYPE_WORDPRESS) {
       templateObj = wordpressParser.parse(parsedObj, TagOptions);
-    } else if (!type || type === TYPE_CUSTOM) {
+    } else if (!type || type === BLOGTYPE.TYPE_CUSTOM) {
       templateObj = commonParser.parse(parsedObj, TagOptions);
     }
     return templateObj;
